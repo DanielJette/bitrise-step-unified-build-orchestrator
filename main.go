@@ -28,6 +28,7 @@ type PathConfig struct {
     Module      string     `env:"module,required"`
     Type        string     `env:"module_type,opt[feature,root,testing,design]"`
     Forced      bool       `env:"forced"`
+    Modules     string     `env:"modules_to_test_list"`
 }
 
 func checkIfTestsExist(testPath string) bool {
@@ -124,6 +125,14 @@ func main() {
     }
     timestamp()
     DisplayInfo()
+
+    moduleList := strings.Split(cfg.Modules, "\n")
+    for _, key := range moduleList {
+        if key == "" {
+            continue
+        }
+        log.Infof("Request to build module %s", key)
+    }
 
     if isSkippable(cfg.Module) {
         os.Exit(0)
