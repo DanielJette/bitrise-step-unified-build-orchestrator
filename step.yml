@@ -61,6 +61,17 @@ toolkit:
     package_name: github.com/bitrise-steplib/bitrise-step-build-orchestrator
 
 inputs:
+  - modules_to_test_list:
+    opts:
+      title: Modules to test
+      summary: List of feature modules to be tested
+      description: |-
+        **FORMAT** Seperate the modules with new line. E.g: 
+        `feature-foo
+        feature-bar
+        feature-baz`
+      is_expand: false
+      is_required: true
   - forced: $FORCE_ORCHESTRATOR
     opts:
       title: "Force tests"
