@@ -25,7 +25,6 @@ func DisplayInfo() {
 }
 
 type PathConfig struct {
-    Module      string     `env:"module,required"`
     Type        string     `env:"module_type,opt[feature,root,testing,design]"`
     Forced      bool       `env:"forced"`
     Modules     string     `env:"modules_to_test_list"`
@@ -127,20 +126,20 @@ func main() {
     DisplayInfo()
 
     moduleList := strings.Split(cfg.Modules, "\n")
-    for _, key := range moduleList {
-        if key == "" {
+    for _, module := range moduleList {
+        if module == "" {
             continue
         }
-        log.Infof("Request to build module %s", key)
-    }
+        log.Infof("Request to build module %s", module)
 
-    if isSkippable(cfg.Module) {
-        os.Exit(0)
-    }
+        if isSkippable(module) {
+            os.Exit(0)
+        }
 
-    log.Infof("Building %s", cfg.Module)
-    timestamp()
-    buildAndTrigger()
+        log.Infof("Building %s", module)
+        timestamp()
+        buildAndTrigger()
+    }
 
     os.Exit(0)
 }
