@@ -151,7 +151,7 @@ func exportModuleConfiguration(module string) {
     log.Infof("Set environment module variable to [%s]", module)
 
     os.Setenv("target_apk", targetApk)
-    os.Setenv("test_package", "")
+    os.Setenv("test_package", testPackage)
     os.Setenv("test_runner", testRunner)
     os.Setenv("module", module)
 }
