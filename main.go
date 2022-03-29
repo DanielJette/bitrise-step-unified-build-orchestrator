@@ -115,6 +115,47 @@ func timestamp() {
     log.Infof("[Time] %d", time.Now().UnixNano() / int64(time.Millisecond) - startTime)
 }
 
+func camelCase(s []string) string {
+    var g []string
+    for _,value := range s {
+        g = append(g,strings.Title(value))
+    }
+    return strings.Join(g,"")
+}
+
+func exportModuleConfiguration(module string) {
+
+    // Module:
+    // feature-account-closure
+
+    // Variant:
+    // InternalDebugAndroidTest
+
+    // Target APK:
+    // feature-account-closure-internal-debug-androidTest.apk
+
+    // Test Package:
+    // com.neofinancial.neo.account.closure.test
+
+    // Test Runner:
+    // com.neofinancial.neo.testing.AccountClosureAndroidTestRunner
+
+    moduleComponents := strings.Split(module, "-")[1:]
+    targetApk := module + "-internal-debug-androidTest.apk"
+    testPackage := "com.neofinancial.neo." + strings.Join(moduleComponents, ".") + ".test"
+    testRunner := "com.neofinancial.neo.testing." + camelCase(moduleComponents) + "AndroidTestRunner"
+
+    log.Infof("Set environment target_apk variable to [%s]", targetApk)
+    log.Infof("Set environment test_package variable to [%s]", testPackage)
+    log.Infof("Set environment test_runner variable to [%s]", testRunner)
+    log.Infof("Set environment module variable to [%s]", module)
+
+    os.Setenv("target_apk", targetApk)
+    os.Setenv("test_package", "")
+    os.Setenv("test_runner", testRunner)
+    os.Setenv("module", module)
+}
+
 func main() {
     startTime = time.Now().UnixNano() / int64(time.Millisecond)
     timestamp()
@@ -135,6 +176,8 @@ func main() {
         if isSkippable(module) {
             os.Exit(0)
         }
+
+        exportModuleConfiguration(module)
 
         log.Infof("Building %s", module)
         timestamp()
