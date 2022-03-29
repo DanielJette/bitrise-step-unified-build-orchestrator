@@ -160,6 +160,12 @@ func exportModuleConfiguration(module string, index int) {
     os.Setenv("test_runner", testRunner)
     os.Setenv("module", module)
     os.Setenv("workflows", workflow)
+
+    // Environment to share:
+    // PARENT_SLUG
+    // TARGET_APK
+    // ADB_COMMAND
+    // MODULE_NAME
 }
 
 func main() {
