@@ -140,20 +140,26 @@ func exportModuleConfiguration(module string) {
     // Test Runner:
     // com.neofinancial.neo.testing.AccountClosureAndroidTestRunner
 
+    // Workflows:
+    // test-worker-account-closure
+
     moduleComponents := strings.Split(module, "-")[1:]
     targetApk := module + "-internal-debug-androidTest.apk"
     testPackage := "com.neofinancial.neo." + strings.Join(moduleComponents, ".") + ".test"
     testRunner := "com.neofinancial.neo.testing." + camelCase(moduleComponents) + "AndroidTestRunner"
+    workflow := "test-worker-" + strings.Join(moduleComponents, "-")
 
     log.Infof("Set environment target_apk variable to [%s]", targetApk)
     log.Infof("Set environment test_package variable to [%s]", testPackage)
     log.Infof("Set environment test_runner variable to [%s]", testRunner)
     log.Infof("Set environment module variable to [%s]", module)
+    log.Infof("Set environment workflows variable to [%s]", workflow)
 
     os.Setenv("target_apk", targetApk)
     os.Setenv("test_package", testPackage)
     os.Setenv("test_runner", testRunner)
     os.Setenv("module", module)
+    os.Setenv("workflows", workflow)
 }
 
 func main() {
@@ -167,11 +173,11 @@ func main() {
     DisplayInfo()
 
     moduleList := strings.Split(cfg.Modules, "\n")
-    for _, module := range moduleList {
+    for i, module := range moduleList {
         if module == "" {
             continue
         }
-        log.Infof("Request to build module %s", module)
+        log.Infof("Request to build module %s %s", i, module)
 
         if isSkippable(module) {
             os.Exit(0)
