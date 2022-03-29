@@ -123,7 +123,7 @@ func camelCase(s []string) string {
     return strings.Join(g,"")
 }
 
-func exportModuleConfiguration(module string) {
+func exportModuleConfiguration(module string, index int) {
 
     // Module:
     // feature-account-closure
@@ -147,7 +147,7 @@ func exportModuleConfiguration(module string) {
     targetApk := module + "-internal-debug-androidTest.apk"
     testPackage := "com.neofinancial.neo." + strings.Join(moduleComponents, ".") + ".test"
     testRunner := "com.neofinancial.neo.testing." + camelCase(moduleComponents) + "AndroidTestRunner"
-    workflow := "test-worker-" + strings.Join(moduleComponents, "-")
+    workflow := fmt.Sprintf("test-worker-agent-%02d", index)
 
     log.Infof("Set environment target_apk variable to [%s]", targetApk)
     log.Infof("Set environment test_package variable to [%s]", testPackage)
@@ -177,13 +177,13 @@ func main() {
         if module == "" {
             continue
         }
-        log.Infof("Request to build module %s %s", i, module)
+        log.Infof("Request to build module %d %s", i, module)
 
         if isSkippable(module) {
             os.Exit(0)
         }
 
-        exportModuleConfiguration(module)
+        exportModuleConfiguration(module, i)
 
         log.Infof("Building %s", module)
         timestamp()
