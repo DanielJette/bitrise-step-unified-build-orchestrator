@@ -10,7 +10,6 @@ import (
 
 type BuildConfig struct {
     Module      string     `env:"module,required"`
-    Variant     string     `env:"variant,required"`
     DeployDir   string     `env:"deploy_path,required"`
     APK         string     `env:"target_apk,required"`
 }
@@ -23,9 +22,11 @@ func Assemble() {
         util.Failf("Issue with an input: %s", err)
     }
 
-    log.Infof("Building %s %s", cfg.Module, cfg.Variant)
+    variant := "InternalDebugAndroidTest"
 
-     cmd := fmt.Sprintf("%s:assemble%s", cfg.Module, cfg.Variant)
+    log.Infof("Building %s %s", cfg.Module, variant)
+
+     cmd := fmt.Sprintf("%s:assemble%s", cfg.Module, variant)
      execmd.ExecuteRelativeCommand(gradlew, cmd)
 }
 
