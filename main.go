@@ -147,7 +147,7 @@ func exportModuleConfiguration(module string, index int) {
     targetApk := module + "-internal-debug-androidTest.apk"
     testPackage := "com.neofinancial.neo." + strings.Join(moduleComponents, ".") + ".test"
     testRunner := "com.neofinancial.neo.testing." + camelCase(moduleComponents) + "AndroidTestRunner"
-    workflow := fmt.Sprintf("test-worker-agent-%02d", index)
+    workflow := fmt.Sprintf("test-worker-agent-%02d", index + 1)
 
     log.Infof("Set environment target_apk variable to [%s]", targetApk)
     log.Infof("Set environment test_package variable to [%s]", testPackage)
